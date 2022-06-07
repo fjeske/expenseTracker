@@ -86,22 +86,25 @@ def main():
         print("\t (v) to view your entries.")
         print("\t (q) to quit")
 
-        selection = input(">>>")
+        selection = input(">>> ")
 
         if selection.lower() == "q":
             break
         elif selection.lower() == "l":
-            amount = float(input("How much did you spent?"))
-            category = str(input("Which category do you want to log?"))
-            message = str(input("Enter a message for your entry."))
-            # test query
-            log(amount, category, message)
-            # log(125.47, "food", "dinner at a restaurant")
+            amount = float(input("How much did you spent? "))
+            category = str(input("Which category do you want to log? "))
+            message = str(input("Enter a message for your entry. "))
+            date = str(input("Enter a date (YYYY-MM-DD) if you want, otherwise today will be entered automatically. "))
+            if date.strip() == "":
+                log(amount, category, message, date)
+            else:
+                log(amount, category, message)
+                # log(125.47, "food", "dinner at a restaurant")
         elif selection.lower() == "v":
             results = view()
             for result in results:
                 print(result)
-            input("Press Enter to get back to the main menu.")
+            input("Press Enter to get back to the main menu. ")
 
 
 if __name__ == "__main__":
