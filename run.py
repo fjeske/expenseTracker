@@ -33,14 +33,15 @@ def init():
     cur.close()
     conn.close()
 
-def log(amount, category, message=""):
+def log(amount, category, message="", date=None):
     """
     logs the expenditure in the database
     amount: number
     category: str
     message: (optional) str
     """
-    date = str(datetime.now())
+    if not date:
+        date = str(datetime.now())
     conn = db.connect("expenses.db")
     cur = conn.cursor()
     sql = f"""
@@ -77,11 +78,30 @@ def view(category=None):
     return results
 
 def main():
-    print("Expense tracker...start your financial journey now!")
     init()
-    # test query
-    #log(120, "transport", "commuting to work")
-    print(view())
+    while True:
+        print("Expense tracker...start your financial journey now!")
+        print("Enter key to select an option:")
+        print("\t (l) for log a new entry.")
+        print("\t (v) to view your entries.")
+        print("\t (q) to quit")
+
+        selection = input(">>>")
+
+        if selection.lower() == "q":
+            break
+        elif selection.lower() == "l":
+            amount = float(input("How much did you spent?"))
+            category = str(input("Which category do you want to log?"))
+            message = str(input("Enter a message for your entry."))
+            # test query
+            log(amount, category, message)
+            # log(125.47, "food", "dinner at a restaurant")
+        elif selection.lower() == "v":
+            results = view()
+            for result in results:
+                print(result)
+            input("Press Enter to get back to the main menu.")
 
 
 if __name__ == "__main__":
