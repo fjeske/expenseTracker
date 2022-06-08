@@ -29,7 +29,7 @@ def get_table_name(option):
 
 def init():
     """initialize a database to store expenditures"""
-    conn = db.connect("expenses.db")
+    conn = db.connect("db.db")
     cur = conn.cursor()
     sql = """
     CREATE TABLE if not exists expenses (
@@ -63,7 +63,7 @@ def log(option, amount, category, message="", date=None):
     cf_type = get_table_name(option=option)
     if not date:
         date = str(datetime.now())
-    conn = db.connect("expenses.db")
+    conn = db.connect("db.db")
     cur = conn.cursor()
     sql = f"""
         INSERT into {cf_type} values (
@@ -84,7 +84,7 @@ def view(option, category=None):
     when a existing category is given this functions gives back the expenses for this category
     """
     cf_type = get_table_name(option=option)
-    conn = db.connect("expenses.db")
+    conn = db.connect("db.db")
     cur = conn.cursor()
     if category:
         sql = f"""
