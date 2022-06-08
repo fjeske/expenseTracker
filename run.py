@@ -16,6 +16,8 @@ import os
 import sqlite3 as db
 from datetime import datetime
 
+DIR_PATH = os.path.dirname(__file__)
+
 def get_table_name(option):
     """this function gets the cashflow option and returns a str with the table name"""
     if option.lower() == "e":
@@ -29,7 +31,7 @@ def get_table_name(option):
 
 def init():
     """initialize a database to store expenditures"""
-    conn = db.connect("db.db")
+    conn = db.connect(os.path.join(DIR_PATH, "db.db"))
     cur = conn.cursor()
     sql = """
     CREATE TABLE if not exists expenses (
@@ -63,7 +65,7 @@ def log(option, amount, category, message="", date=None):
     cf_type = get_table_name(option=option)
     if not date:
         date = str(datetime.now())
-    conn = db.connect("db.db")
+    conn = db.connect(os.path.join(DIR_PATH, "db.db"))
     cur = conn.cursor()
     sql = f"""
         INSERT into {cf_type} values (
@@ -84,7 +86,7 @@ def view(option, category=None):
     when a existing category is given this functions gives back the expenses for this category
     """
     cf_type = get_table_name(option=option)
-    conn = db.connect("db.db")
+    conn = db.connect(os.path.join(DIR_PATH, "db.db"))
     cur = conn.cursor()
     if category:
         sql = f"""
@@ -123,9 +125,9 @@ def main():
             message = str(input("Enter a message for your entry. "))
             date = str(input("Enter a date (YYYY-MM-DD) if you want, otherwise today will be entered automatically. "))
             if date.strip() == "":
-                log(option=cashflow_type, amount=amount, category=category, message=message, date=date)
-            else:
                 log(option=cashflow_type, amount=amount, category=category, message=message)
+            else:
+                log(option=cashflow_type, amount=amount, category=category, message=message, date=date)
                 # log(125.47, "food", "dinner at a restaurant")
         elif selection.lower() == "v":
             print("Select category to view:")
