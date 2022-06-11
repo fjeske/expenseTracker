@@ -65,7 +65,7 @@ def log(option, amount, category, message="", date=None):
     """
     cf_type = get_table_name(option=option)
     if not date:
-        date = str(datetime.now())
+        date = str(datetime.now().date())
     conn = db.connect(os.path.join(DIR_PATH, "db.db"))
     cur = conn.cursor()
     sql = f"""
