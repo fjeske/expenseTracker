@@ -2,6 +2,7 @@
 
 import sqlite3 as db
 import pandas as pd
+import matplotlib.pyplot as plt
 
 class Analyzer():
     def __init__(self, database_path, cf_type):
@@ -28,5 +29,9 @@ class Analyzer():
 
 if __name__ == "__main__":
     analyzer = Analyzer(database_path="db.db", cf_type='expenses')
-    print(analyzer.df)
-    print(analyzer.df.groupby(pd.Grouper(freq="M")).sum())
+    # print(analyzer.df)
+    # data_by_month = analyzer.df.groupby(pd.Grouper(freq="M")).sum()
+    data_by_category_and_month = analyzer.df.groupby([pd.Grouper(freq="M"), 'category']).sum()
+    data_by_category_and_month.unstack('category').plot.bar()
+    # data_by_month.plot(kind="bar", ax=ax)
+    plt.show()
